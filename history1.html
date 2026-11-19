@@ -3,35 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ประวัติส่วนตัว - นิรันดร์ สุภาทอง ✨</title>
+    <title>Interactive Bento Profile ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-1: #0f172a;
-            --bg-2: #1e1b4b;
-            --card: rgba(30, 41, 59, 0.82);
-            --box: rgba(255, 255, 255, 0.05);
-            --box-hover: rgba(255, 255, 255, 0.1);
+            --bg: #090d16;
+            --surface: rgba(17, 24, 39, 0.78);
+            --surface-2: rgba(30, 41, 59, 0.65);
+            --border: rgba(255, 255, 255, 0.1);
             --text: #f8fafc;
             --muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-2: #a855f7;
-            --border: rgba(255, 255, 255, 0.12);
-            --glow: rgba(56, 189, 248, 0.25);
-        }
-
-        body.light-mode {
-            --bg-1: #e0f2fe;
-            --bg-2: #f3e8ff;
-            --card: rgba(255, 255, 255, 0.86);
-            --box: rgba(15, 23, 42, 0.03);
-            --box-hover: rgba(56, 189, 248, 0.12);
-            --text: #0f172a;
-            --muted: #475569;
-            --accent: #0284c7;
-            --accent-2: #7c3aed;
-            --border: rgba(15, 23, 42, 0.1);
-            --glow: rgba(124, 58, 237, 0.18);
+            --pink: #ec4899;
+            --cyan: #06b6d4;
+            --amber: #f59e0b;
         }
 
         * {
@@ -42,368 +26,508 @@
             font-family: 'Prompt', sans-serif;
             margin: 0;
             min-height: 100vh;
-            padding: 40px 18px;
+            background-color: var(--bg);
             color: var(--text);
-            background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 32px 16px;
             overflow-x: hidden;
-            transition: background 0.4s ease, color 0.3s ease;
+            position: relative;
         }
 
-        /* ลูกเล่นแสงวิบวับวิ่งตามเมาส์ */
-        .spotlight {
+        /* พื้นหลัง Aurora เคลื่อนไหวเบาๆ */
+        .aurora {
             position: fixed;
-            width: 360px;
-            height: 360px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--glow), transparent 70%);
-            pointer-events: none;
-            transform: translate(-50%, -50%);
+            inset: 0;
             z-index: 0;
-            transition: left 0.08s linear, top 0.08s linear;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 20% 25%, rgba(236, 72, 153, 0.22), transparent 42%),
+                radial-gradient(circle at 80% 75%, rgba(6, 182, 212, 0.22), transparent 42%),
+                radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1), transparent 50%);
+            animation: drift 10s ease-in-out infinite alternate;
         }
 
-        .card {
+        @keyframes drift {
+            from { transform: scale(1) translate(0, 0); }
+            to { transform: scale(1.08) translate(15px, -15px); }
+        }
+
+        /* โครงสร้าง Bento Grid แบ่งซ้าย-ขวา */
+        .bento-wrapper {
             position: relative;
             z-index: 1;
-            max-width: 680px;
+            max-width: 920px;
             width: 100%;
-            background: var(--card);
-            backdrop-filter: blur(18px);
+            display: grid;
+            grid-template-columns: 310px 1fr;
+            gap: 20px;
+        }
+
+        .glass-panel {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--border);
-            border-radius: 26px;
-            overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
-            animation: popIn 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: 28px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
         }
 
-        @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: translateY(24px) scale(0.97);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .hero {
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            padding: 34px 26px 30px;
-            text-align: center;
-            color: #ffffff;
-            position: relative;
-        }
-
-        .top-bar {
+        /* การ์ดโปรไฟล์ฝั่งซ้าย */
+        .sidebar {
+            padding: 32px 24px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 18px;
+            text-align: center;
+            justify-content: space-between;
         }
 
-        .pill {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(6px);
-            padding: 5px 14px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 500;
+        .avatar-ring {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--pink), var(--amber), var(--cyan));
+            animation: spinHue 6s linear infinite;
+            margin-bottom: 16px;
         }
 
-        .theme-btn {
-            background: rgba(255, 255, 255, 0.22);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-family: 'Prompt', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
+        @keyframes spinHue {
+            to { filter: hue-rotate(360deg); }
+        }
+
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #111827;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 46px;
+            user-select: none;
             cursor: pointer;
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .theme-btn:hover {
-            transform: scale(1.06);
-            background: rgba(255, 255, 255, 0.35);
-        }
-
-        .hero h1 {
-            margin: 0;
-            font-size: 30px;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-block;
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .hero h1:hover {
-            transform: scale(1.05) rotate(-1deg);
+        .avatar-inner:hover {
+            transform: scale(1.08) rotate(8deg);
         }
 
-        .hero p {
-            margin: 8px 0 0;
-            font-size: 15px;
-            opacity: 0.92;
-            font-weight: 300;
-        }
-
-        .body-area {
-            padding: 28px;
-        }
-
-        .section-title {
-            font-size: 17px;
-            font-weight: 600;
-            margin: 24px 0 12px;
-            display: flex;
+        .status-badge {
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            color: var(--accent);
+            gap: 7px;
+            background: rgba(16, 185, 129, 0.14);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #6ee7b7;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            margin-bottom: 12px;
         }
 
-        .section-title:first-child {
-            margin-top: 0;
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
         }
 
-        .grid {
+        .sidebar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .typing-role {
+            margin: 8px 0 0;
+            font-size: 14px;
+            color: var(--cyan);
+            min-height: 22px;
+            font-weight: 400;
+        }
+
+        .quick-stats {
+            width: 100%;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 22px 0;
         }
 
-        .box {
-            background: var(--box);
+        .stat-box {
+            background: var(--surface-2);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 14px 16px;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 12px 8px;
         }
 
-        .box:hover {
-            transform: translateY(-4px) scale(1.01);
-            background: var(--box-hover);
-            border-color: var(--accent);
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+        .stat-num {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
         }
 
-        .label {
+        .stat-label {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .celebrate-btn {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, var(--pink), var(--cyan));
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .celebrate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.35);
+        }
+
+        /* ฝั่งขวาแบบ Interactive Tabs + Bento Cards */
+        .main-area {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 6px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 13px;
+            background: transparent;
+            color: var(--muted);
+            font-family: 'Prompt', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(6, 182, 212, 0.25));
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeSlide 0.35s ease;
+        }
+
+        .tab-content.active {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bento-card {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 18px;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .bento-card.wide {
+            grid-column: span 2;
+        }
+
+        .card-tag {
             font-size: 12px;
             color: var(--muted);
+            margin-bottom: 6px;
             display: block;
-            margin-bottom: 3px;
         }
 
-        .val {
-            font-size: 15px;
+        .card-value {
+            font-size: 16px;
             font-weight: 500;
-        }
-
-        .copy-inline {
-            margin-left: 8px;
-            padding: 2px 9px;
-            border-radius: 8px;
-            border: none;
-            background: var(--accent);
             color: #fff;
-            font-family: 'Prompt', sans-serif;
-            font-size: 11px;
-            cursor: pointer;
-            transition: transform 0.15s ease;
         }
 
-        .copy-inline:active {
-            transform: scale(0.92);
+        .skill-bar-wrap {
+            margin-top: 10px;
         }
 
-        .chips {
+        .skill-row {
+            margin-bottom: 12px;
+        }
+
+        .skill-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .skill-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .bar-bg {
+            height: 8px;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, var(--pink), var(--cyan));
+        }
+
+        .hobby-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            margin-top: 6px;
         }
 
-        .chip {
-            padding: 9px 18px;
+        .hobby-pill {
+            padding: 8px 16px;
             border-radius: 999px;
-            background: var(--box);
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--border);
             font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.2s ease;
         }
 
-        .chip:hover {
-            transform: translateY(-4px) rotate(1.5deg);
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            color: #fff;
-            border-color: transparent;
+        .hobby-pill:hover {
+            background: var(--pink);
+            border-color: var(--pink);
+            transform: scale(1.06);
         }
 
-        .fun-note {
-            margin-top: 22px;
-            padding: 14px 16px;
-            border-radius: 16px;
-            background: var(--box);
-            border-left: 4px solid var(--accent-2);
-            font-size: 14px;
-            color: var(--muted);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .fun-btn {
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            padding: 8px 14px;
-            font-family: 'Prompt', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: transform 0.2s ease;
-        }
-
-        .fun-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .toast {
+        /* พลุกระดาษเวลาคลิกปุ่ม */
+        .confetti {
             position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: #111827;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 999px;
-            font-size: 13px;
-            opacity: 0;
+            width: 9px;
+            height: 9px;
+            border-radius: 2px;
             pointer-events: none;
-            transition: all 0.25s ease;
             z-index: 99;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            animation: fall 1.4s ease-out forwards;
         }
 
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+        @keyframes fall {
+            0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(540deg); }
+        }
+
+        @media (max-width: 780px) {
+            .bento-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .tab-content.active {
+                grid-template-columns: 1fr;
+            }
+            .bento-card.wide {
+                grid-column: span 1;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="spotlight" id="spotlight"></div>
+    <div class="aurora"></div>
 
-    <div class="card">
-        <div class="hero">
-            <div class="top-bar">
-                <span class="pill">🚀 HISTORY1.HTML EDITION</span>
-                <button class="theme-btn" id="themeToggle" type="button">☀️ โหมดสว่าง</button>
+    <div class="bento-wrapper">
+        <!-- การ์ดซ้าย -->
+        <aside class="glass-panel sidebar">
+            <div>
+                <div class="avatar-ring">
+                    <div class="avatar-inner" id="avatarEmoji" title="คลิกเปลี่ยนอารมณ์!">😎</div>
+                </div>
+                <div class="status-badge">
+                    <span class="dot"></span> พร้อมลุยโปรเจกต์ใหม่
+                </div>
+                <h1>ชื่อ - นามสกุล</h1>
+                <p class="typing-role" id="typingText"></p>
             </div>
-            <h1 id="nameTitle" title="ลองคลิกชื่อดูสิ!">พัชราพร สองแกะ</h1>
-            <p>นักศึกษาสาขาเทคโนโลยีสารสนเทศ</p>
-        </div>
 
-        <div class="body-area">
-            <div class="section-title">✨ ข้อมูลส่วนตัว</div>
-            <div class="grid">
-                <div class="box">
-                    <span class="label">ชื่อเล่น</span>
-                    <span class="val">อั้ม</span>
+            <div class="quick-stats">
+                <div class="stat-box">
+                    <span class="stat-num">20</span>
+                    <span class="stat-label">อายุ (ปี)</span>
                 </div>
-                <div class="box">
-                    <span class="label">อายุ</span>
-                    <span class="val">20 ปี</span>
-                </div>
-                <div class="box">
-                    <span class="label">ที่อยู่</span>
-                    <span class="val">ท้ายนิคม สมุทรปราการ</span>
-                </div>
-                <div class="box">
-                    <span class="label">อีเมล</span>
-                    <span class="val" id="emailText">aum@gmail.com</span>
-                    <button class="copy-inline" id="copyEmailBtn" type="button">ก๊อป</button>
+                <div class="stat-box">
+                    <span class="stat-num">IT / DEV</span>
+                    <span class="stat-label">สายการเรียน</span>
                 </div>
             </div>
 
-            <div class="section-title">🎓 การศึกษา</div>
-            <div class="grid">
-                <div class="box">
-                    <span class="label">ระดับการศึกษา</span>
-                    <span class="val">ปวส. สาขาเทคโนโลยีสารสนเทศ</span>
+            <button class="celebrate-btn" id="partyBtn" type="button">🎉 กดทักทาย & ปล่อยพลุ</button>
+        </aside>
+
+        <!-- การ์ดขวา -->
+        <main class="glass-panel main-area">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="about" type="button">👤 ข้อมูลส่วนตัว</button>
+                <button class="tab-btn" data-tab="edu" type="button">🎓 การศึกษา & สกิล</button>
+                <button class="tab-btn" data-tab="hobby" type="button">🎮 ไลฟ์สไตล์</button>
+            </div>
+
+            <!-- แท็บ 1 -->
+            <div class="tab-content active" id="tab-about">
+                <div class="bento-card">
+                    <span class="card-tag">ชื่อเล่น</span>
+                    <div class="card-value">อั้ม</div>
                 </div>
-                <div class="box">
-                    <span class="label">สถานศึกษา</span>
-                    <span class="val">เทคนิคสมุทรปราการ</span>
+                <div class="bento-card">
+                    <span class="card-tag">จังหวัด / ที่อยู่</span>
+                    <div class="card-value">สมุทรปราการ, ประเทศไทย</div>
+                </div>
+                <div class="bento-card wide">
+                    <span class="card-tag">อีเมลติดต่อ</span>
+                    <div class="card-value">aumemail@gmail.com</div>
+                </div>
+                <div class="bento-card wide">
+                    <span class="card-tag">แนะนำตัวสั้นๆ</span>
+                    <div class="card-value">ชอบเรียนรู้เทคโนโลยีใหม่ๆ พัฒนาเว็บแอปพลิเคชัน และออกแบบหน้าตา UI ให้ใช้งานสนุก</div>
                 </div>
             </div>
 
-            <div class="section-title">🎮 งานอดิเรก / ความสนใจ</div>
-            <div class="chips">
-                <span class="chip">🕹️ ดูหนัง เล่นเกม</span>
-                <span class="chip">🚗 เที่ยว</span>
+            <!-- แท็บ 2 -->
+            <div class="tab-content" id="tab-edu">
+                <div class="bento-card wide">
+                    <span class="card-tag">สถานศึกษา & สาขา</span>
+                    <div class="card-value">สาขาเทคโนโลยีสารสนเทศ • เทคนิคสมุทรปราการ</div>
+                </div>
+                <div class="bento-card wide">
+                    <span class="card-tag">ทักษะความสามารถ</span>
+                    <div class="skill-bar-wrap">
+                        <div class="skill-row">
+                            <div class="skill-head"><span>HTML UI Design</span><span>90%</span></div>
+                            <div class="bar-bg"><div class="bar-fill" style="width: 90%"></div></div>
+                        </div>
+                        <div class="skill-row">
+                            <div class="skill-head"><span>Git & GitHub Pages</span><span>85%</span></div>
+                            <div class="bar-bg"><div class="bar-fill" style="width: 85%"></div></div>
+                        </div>
+                    
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="fun-note">
-                <span id="quoteText">💬 พร้อมลุยโค้ดและอัปสกิลใหม่ๆ ทุกวัน!</span>
-                <button class="fun-btn" id="nextQuoteBtn" type="button">สุ่มคำคม</button>
+            <!-- แท็บ 3 -->
+            <div class="tab-content" id="tab-hobby">
+                <div class="bento-card wide">
+                    <span class="card-tag">งานอดิเรกที่ชอบ</span>
+                    <div class="hobby-grid">
+                        <span class="hobby-pill">🎮 เล่นเกม</span>
+                        <span class="hobby-pill">🚗 ขับรถเที่ยว</span>
+                        <span class="hobby-pill">💻 ชอบดีไซต์</span>
+                        <span class="hobby-pill">🎧 ฟังเพลงชิลๆ</span>
+                    </div>
+                </div>
+                <div class="bento-card wide">
+                    <span class="card-tag">เป้าหมายช่วงนี้</span>
+                    <div class="card-value">ติดใหาลัยในฝัน 🚀</div>
+                </div>
             </div>
-        </div>
+        </main>
     </div>
 
-    <div class="toast" id="toast">คัดลอกเรียบร้อยแล้ว!</div>
-
     <script>
-        const spotlight = document.getElementById('spotlight');
-        window.addEventListener('mousemove', (e) => {
-            spotlight.style.left = e.clientX + 'px';
-            spotlight.style.top = e.clientY + 'px';
-        });
+        // เอฟเฟกต์พิมพ์ดีดวิ่งอัตโนมัติ
+        const roles = ['Frontend & Web Creator ✨', 'IT Student & Developer 💻', 'Creative UI Explorer 🚀'];
+        let rIdx = 0, cIdx = 0, deleting = false;
+        const typingEl = document.getElementById('typingText');
 
-        const toast = document.getElementById('toast');
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
+        function typeLoop() {
+            const current = roles[rIdx];
+            typingEl.textContent = current.slice(0, cIdx);
+            if (!deleting && cIdx < current.length) {
+                cIdx++;
+                setTimeout(typeLoop, 80);
+            } else if (!deleting && cIdx === current.length) {
+                deleting = true;
+                setTimeout(typeLoop, 1400);
+            } else if (deleting && cIdx > 0) {
+                cIdx--;
+                setTimeout(typeLoop, 45);
+            } else {
+                deleting = false;
+                rIdx = (rIdx + 1) % roles.length;
+                setTimeout(typeLoop, 300);
+            }
         }
+        typeLoop();
 
-        const themeBtn = document.getElementById('themeToggle');
-        themeBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            themeBtn.textContent = isLight ? '🌙 โหมดมืด' : '☀️ โหมดสว่าง';
-            showToast(isLight ? 'เปลี่ยนเป็นโหมดสว่างแล้วค่า!' : 'เปลี่ยนเป็นโหมดมืดแล้วค่า!');
+        // สลับแท็บข้อมูล
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            });
         });
 
-        document.getElementById('copyEmailBtn').addEventListener('click', () => {
-            const email = document.getElementById('emailText').textContent;
-            navigator.clipboard?.writeText(email);
-            showToast('📋 ก๊อปอีเมล ' + email + ' แล้ว!');
+        // คลิกเปลี่ยนอิโมจิโปรไฟล์
+        const emojis = ['😎', '🚀', '💻', '🔥', '✨', '🎧'];
+        let eIdx = 0;
+        document.getElementById('avatarEmoji').addEventListener('click', (e) => {
+            eIdx = (eIdx + 1) % emojis.length;
+            e.target.textContent = emojis[eIdx];
         });
 
-        document.getElementById('nameTitle').addEventListener('click', () => {
-            showToast('👋 สวัสดีครับ อั้ม / พัชราพร รายงานตัว!');
-        });
+        // ปุ่มปล่อยพลุคอนเฟตติ
+        document.getElementById('partyBtn').addEventListener('click', (e) => {
+            const colors = ['#ec4899', '#06b6d4', '#f59e0b', '#10b981', '#a855f7'];
+            const rect = e.target.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
 
-        const quotes = [
-            '💬 พร้อมลุยโค้ดและอัปสกิลใหม่ๆ ทุกวัน!',
-            '🚗 ขับรถชิลๆ สมองโล่ง คิดฟีเจอร์ใหม่ได้เพียบ!',
-            '🎮 เกมต้องเล่น โค้ดต้องเขียน เว็บต้องสวย!',
-            '✨ บั๊กมีไว้ให้แก้ ไม่ใช่มีไว้ให้ท้อนะอั้ม!'
-        ];
-        let qIdx = 0;
-        document.getElementById('nextQuoteBtn').addEventListener('click', () => {
-            qIdx = (qIdx + 1) % quotes.length;
-            document.getElementById('quoteText').textContent = quotes[qIdx];
+            for (let i = 0; i < 36; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'confetti';
+                dot.style.left = originX + 'px';
+                dot.style.top = originY + 'px';
+                dot.style.background = colors[i % colors.length];
+                dot.style.setProperty('--dx', (Math.random() - 0.5) * 340 + 'px');
+                dot.style.setProperty('--dy', (Math.random() - 0.8) * 320 + 'px');
+                document.body.appendChild(dot);
+                setTimeout(() => dot.remove(), 1450);
+            }
         });
     </script>
 </body>
